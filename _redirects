@@ -1,0 +1,3 @@
+# ssretailservices.in/png → PNG Connect web application
+/png    https://png-connect-bokaro.netlify.app/   302!
+/png/*  https://png-connect-bokaro.netlify.app/   302!

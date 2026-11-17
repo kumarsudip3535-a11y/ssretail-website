@@ -44,7 +44,9 @@ header{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:15
 .menu a:hover{color:var(--paper);background:rgba(255,255,255,.06)}
 .menu a.go{background:var(--sodium);color:var(--sodium-ink);font-weight:600}
 .menu a.go:hover{background:#FFA25E}
-@media (max-width:860px){.menu a:not(.go){display:none}}
+.menu a.png{color:#6ee7b7;font-weight:600;border:1px solid rgba(110,231,183,.35)}
+.menu a.png:hover{background:rgba(52,211,153,.12);color:#a7f3d0}
+@media (max-width:860px){.menu a:not(.go):not(.png){display:none}}
 
 /* HUD route indicator */
 .hud{position:fixed;right:max(20px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
@@ -154,7 +156,7 @@ footer .f{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;justify-con
   <div class="bar">
     <a class="logo" href="#forecourt"><i>SS</i><span>SS Retail<small>SERVICES</small></span></a>
     <nav class="menu">
-      <a href="#civil">Services</a><a href="#sectors">Sectors</a><a href="#contact">Contact</a>
+      <a href="#civil">Services</a><a href="#sectors">Sectors</a><a href="#contact">Contact</a><a class="png" href="/png" title="PNG Connect – customer survey &amp; installation app">PNG</a>
       <a class="go" href="https://wa.me/919905719715?text=Hi" target="_blank" rel="noopener">Chat on WhatsApp</a>
     </nav>
   </div>
