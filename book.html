@@ -142,6 +142,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--volt);bo
 .btn[disabled]{opacity:.55;cursor:not-allowed;transform:none}
 .btn-pay{width:100%;padding:18px 22px;font-size:17px}
 .btn-pay svg{width:18px;height:18px}
+.partner{margin:12px auto 0;max-width:46ch;text-align:center;font-size:13px;line-height:1.45;color:var(--haze)}
+.partner b{color:var(--soft);font-weight:600}
 .methods{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;margin-top:12px;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--haze)}
 
 /* done */
@@ -255,6 +257,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--volt);bo
           <p class="err" id="e-agree" hidden>Tick the box to continue.</p>
           <button class="btn btn-sodium btn-pay" type="button" id="pay" style="margin-top:18px"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="10" height="7" rx="2"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg><span id="payLabel">Pay ₹1,000 &amp; confirm booking</span></button>
           <div class="methods"><span>UPI</span><span>Cards</span><span>Net banking</span><span>Wallets</span></div>
+          <p class="partner">Payments are securely collected by <b>Saanvi Consultancy Services</b>, our booking partner for SS Retail Services.</p>
           <div class="alert" id="payErr" role="alert" hidden></div>
           <div class="nav"><button class="btn btn-ghost" type="button" data-back="2">← Back</button><span></span></div>
         </fieldset>
