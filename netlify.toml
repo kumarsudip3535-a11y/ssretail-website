@@ -1,0 +1,13 @@
+# Netlify settings for ssretailservices.in
+# No build step: the site is plain HTML. Netlify still bundles the payment functions.
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Cache-Control = "no-store"

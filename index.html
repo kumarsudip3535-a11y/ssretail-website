@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Government-approved civil, electrical & mechanical repair and maintenance contractor for fuel stations, industrial facilities, commercial buildings and government projects. Chas, Bokaro.">
+<meta name="description" content="Government-approved civil, electrical & mechanical repair and maintenance contractor for fuel stations, industrial facilities, commercial buildings and government projects. Book a service online. Chas, Bokaro.">
 <meta property="og:title" content="SS Retail Services — Civil, Electrical & Mechanical Contractor">
-<meta property="og:description" content="Repair & maintenance work that passes inspection the first time. 24×7 emergency support.">
+<meta property="og:description" content="Repair & maintenance work that passes inspection the first time. Book a service online. 24×7 emergency support.">
 <meta name="theme-color" content="#0B0D1C">
 <title>SS Retail Services — Civil, Electrical &amp; Mechanical Contractor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -119,6 +119,27 @@ h1 .glow{background:linear-gradient(100deg,#FFD0A8 0%,var(--sodium) 45%,#FF5E7E 
 @media (max-width:760px){.metrics{grid-template-columns:1fr 1fr}}
 
 /* contact */
+/* booking */
+.booking{padding-block:100px}
+.booking-in{max-width:1280px;margin:0 auto;padding:34px;display:grid;gap:26px}
+.booking-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px}
+.booking-head > div{max-width:640px;min-width:0}
+.booking h2{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,4.6vw,62px);line-height:.95;letter-spacing:-.035em;margin:12px 0 12px;text-wrap:balance}
+.booking h2 span{color:var(--sodium)}
+.booking-head p{margin:0;color:#CFCBDB}
+.svc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.svc{display:grid;gap:4px;padding:18px;border-radius:16px;text-decoration:none;background:rgba(255,255,255,.04);border:1px solid var(--edge);transition:transform .25s,border-color .25s,background .25s;min-width:0}
+.svc:hover{transform:translateY(-4px);border-color:var(--volt);background:rgba(125,243,255,.07)}
+.svc svg{width:32px;height:32px;color:var(--sodium);margin-bottom:8px}
+.svc b{font-family:var(--f-display);font-weight:700;font-size:18px;line-height:1.15}
+.svc small{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--haze)}
+.how{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.how li{display:flex;align-items:center;gap:12px;font-size:15px;padding-top:12px;border-top:2px solid var(--edge)}
+.how li b{flex:none;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-family:var(--f-mono);font-size:13px;background:var(--sodium);color:var(--sodium-ink)}
+.secure-note{margin:0;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--haze)}
+@media (max-width:1000px){.svc-grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:640px){.svc-grid{grid-template-columns:1fr 1fr}.svc:last-child{grid-column:1/-1}.how{grid-template-columns:1fr}.booking-in{padding:22px}}
+
 .contact{min-height:110vh;display:flex;align-items:center;padding-block:100px}
 .contact-in{max-width:1280px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.25fr .85fr;gap:20px;align-items:stretch}
 .contact .card{padding:32px}
@@ -157,7 +178,8 @@ footer .f{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;justify-con
     <a class="logo" href="#forecourt"><i>SS</i><span>SS Retail<small>SERVICES</small></span></a>
     <nav class="menu">
       <a href="#civil">Services</a><a href="#sectors">Sectors</a><a href="#contact">Contact</a><a class="png" href="/png" title="PNG Connect – customer survey &amp; installation app">PNG</a>
-      <a class="go" href="https://wa.me/919905719715?text=Hi" target="_blank" rel="noopener">Chat on WhatsApp</a>
+      <a href="https://wa.me/919905719715?text=Hi" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="go" href="book.html">Book a Service</a>
     </nav>
   </div>
 </header>
@@ -178,7 +200,8 @@ footer .f{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;justify-con
       <h1>Repair work that <span class="glow">passes inspection</span> the first time.</h1>
       <p>Civil, electrical and mechanical repair and maintenance for fuel stations, industrial plants, commercial buildings and government projects. Built to hold up, not just look finished.</p>
       <div class="row">
-        <a class="btn btn-sodium" href="https://wa.me/919905719715?text=Hi" target="_blank" rel="noopener">Get a quote on WhatsApp →</a>
+        <a class="btn btn-sodium" href="book.html">Book a service request →</a>
+        <a class="btn btn-glass" href="https://wa.me/919905719715?text=Hi" target="_blank" rel="noopener">Get a quote on WhatsApp</a>
         <a class="btn btn-glass" href="#civil">Take the site tour</a>
       </div>
       <div class="scrollcue">SCROLL TO WALK THE SITE</div>
@@ -242,6 +265,32 @@ footer .f{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;justify-con
         <div class="card"><b>100%</b><span>GST invoiced</span></div>
         <div class="card"><b>1</b><span>Point of contact</span></div>
       </div>
+    </div>
+  </section>
+
+  <section class="booking gut" id="book">
+    <div class="booking-in card">
+      <div class="booking-head">
+        <div>
+          <div class="eyebrow">Book a service request</div>
+          <h2>Lights out or panel tripping? <span>Book a crew online.</span></h2>
+          <p>Choose the repair, share your site details and pay an advance of ₹500 or more. Your request is confirmed the moment the payment succeeds.</p>
+        </div>
+        <a class="btn btn-sodium" href="book.html">Book a service →</a>
+      </div>
+      <div class="svc-grid">
+        <a class="svc" href="book.html?service=canopy-lights"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h22M5 7v2h18V7"/><path d="M9 12l-2 4M14 12v5M19 12l2 4"/></svg><b>Canopy lights</b><small>Repair</small></a>
+        <a class="svc" href="book.html?service=yard-lights"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 26V6h8"/><path d="M14 6h8l-1 3h-6z"/><path d="M15 12l-2 4M18 12v4M21 12l2 4"/></svg><b>Yard lights</b><small>Repair</small></a>
+        <a class="svc" href="book.html?service=hoarding-lights"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="22" height="11" rx="1"/><path d="M9 18v8M19 18v8M8 4l2 3M14 3v4M20 4l-2 3"/></svg><b>Hoarding lights</b><small>Repair</small></a>
+        <a class="svc" href="book.html?service=false-ceiling"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h22v3H3z"/><path d="M5 9v3h7v-3M16 9l3 6 4-1-2-5"/></svg><b>Canopy false ceiling</b><small>Repair</small></a>
+        <a class="svc" href="book.html?service=electrical-panel"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="16" height="22" rx="2"/><path d="M10 8h2M16 8h2M10 13h2M16 13h2"/><path d="M15 17l-2 3h3l-2 3"/></svg><b>Electrical panel</b><small>Work</small></a>
+      </div>
+      <ol class="how">
+        <li><b>1</b><span>Choose the repair</span></li>
+        <li><b>2</b><span>Share your site details</span></li>
+        <li><b>3</b><span>Pay ₹500+ advance and your booking is confirmed</span></li>
+      </ol>
+      <p class="secure-note">Secure payment by Razorpay · UPI, cards, net banking and wallets</p>
     </div>
   </section>
 

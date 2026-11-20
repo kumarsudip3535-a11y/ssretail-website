@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Book a Service — SS Retail Services</title>
+<meta name="description" content="Book a canopy light, yard light, hoarding light, false ceiling or electrical panel repair with SS Retail Services. Pay a small advance online to confirm.">
+<meta name="theme-color" content="#0B0D1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: 3D forecourt with broken lights fills the screen; a glass booking card sits left, a live draft work order sits bottom-right; paying the advance "repairs" the scene */
+:root{
+  --night:#0B0D1C; --glass:rgba(16,19,38,.72); --glass-2:rgba(255,255,255,.05); --edge:rgba(255,255,255,.13);
+  --paper:#F3EFEA; --soft:#D6D3E2; --haze:#A7A9C2; --sodium:#FF8A3D; --sodium-ink:#231004; --volt:#7DF3FF; --ok:#5CF29A; --bad:#FF8F8F;
+  --f-display:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--night);color:var(--paper);font-family:var(--f-body);font-size:16px;line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--night)}
+img{max-width:100%}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--volt);outline-offset:3px;border-radius:8px}
+#stage{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0;background:linear-gradient(#070a1a,#2b2140 60%,#5a3140)}
+.vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 65% 40%,transparent 45%,rgba(5,6,14,.7) 100%),linear-gradient(90deg,rgba(8,9,20,.55),transparent 55%)}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* header */
+header{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:20;background:linear-gradient(rgba(11,13,28,.9),rgba(11,13,28,.55));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06)}
+.bar{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:14px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo i{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-style:normal;font-family:var(--f-display);font-weight:800;font-size:17px;color:var(--sodium-ink);background:linear-gradient(140deg,#FFB27A,var(--sodium));box-shadow:0 0 24px rgba(255,138,61,.55)}
+.logo span{font-family:var(--f-display);font-weight:700;font-size:16px;line-height:1.05}
+.logo small{display:block;font-family:var(--f-mono);font-weight:400;font-size:10px;letter-spacing:.22em;color:var(--haze)}
+.hright{display:flex;align-items:center;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:var(--glass);border:1px solid var(--edge);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font-size:13px;text-decoration:none;color:var(--soft)}
+.chip svg{width:14px;height:14px;flex:none}
+a.chip:hover{color:var(--paper);border-color:rgba(255,255,255,.3)}
+@media (max-width:560px){.chip.secure{display:none}}
+
+/* layout */
+main{position:relative;z-index:2;max-width:1280px;margin:0 auto;padding-block:96px 56px}
+.panel{width:min(580px,100%);padding:30px;border-radius:24px;background:var(--glass);border:1px solid var(--edge);backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);box-shadow:0 40px 90px -30px rgba(0,0,0,.85)}
+@media (max-width:900px){main{padding-top:38vh}.panel{padding:22px;margin:0 auto}}
+
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--volt)}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(32px,4.2vw,46px);line-height:1;letter-spacing:-.03em;margin:10px 0 10px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--sodium)}
+.intro p{margin:0;color:var(--soft);max-width:52ch}
+.demo{margin:0 0 18px;padding:10px 14px;border-radius:12px;font-size:13px;background:rgba(125,243,255,.08);border:1px dashed rgba(125,243,255,.45);color:var(--volt)}
+
+/* stepper */
+.stepper{list-style:none;margin:24px 0 22px;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stepper li{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--haze);padding-top:10px;border-top:3px solid rgba(255,255,255,.12);transition:color .3s,border-color .3s;min-width:0}
+.stepper li b{flex:none;width:24px;height:24px;border-radius:8px;display:grid;place-items:center;font-family:var(--f-mono);font-size:12px;background:rgba(255,255,255,.08)}
+.stepper li.on{color:var(--paper);border-color:var(--sodium)}
+.stepper li.on b{background:var(--sodium);color:var(--sodium-ink)}
+.stepper li.done{color:var(--soft);border-color:var(--ok)}
+.stepper li.done b{background:var(--ok);color:#06210f}
+@media (max-width:420px){.stepper li span{font-size:12px}}
+
+fieldset{border:0;margin:0;padding:0;min-width:0;animation:rise .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes rise{from{transform:translateY(10px);opacity:.4}to{transform:none;opacity:1}}
+legend{font-family:var(--f-display);font-weight:700;font-size:22px;letter-spacing:-.01em;padding:0;margin-bottom:4px}
+.hint{color:var(--haze);font-size:14px;margin:0 0 16px}
+
+/* service tiles */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{position:relative;text-align:left;font:inherit;color:inherit;cursor:pointer;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start;padding:14px;border-radius:16px;background:var(--glass-2);border:1px solid var(--edge);transition:border-color .2s,background .2s,transform .2s;min-width:0}
+.tile:hover{border-color:rgba(255,255,255,.3);transform:translateY(-2px)}
+.tile svg{grid-row:span 2;width:30px;height:30px;color:var(--sodium)}
+.tile b{font-weight:700;font-size:15px;line-height:1.25;padding-right:22px}
+.tile small{color:var(--haze);font-size:12.5px;line-height:1.4}
+.tile::after{content:"";position:absolute;top:12px;right:12px;width:18px;height:18px;border-radius:6px;border:1.5px solid rgba(255,255,255,.3)}
+.tile[aria-checked="true"]{border-color:var(--volt);background:rgba(125,243,255,.09)}
+.tile[aria-checked="true"]::after{border-color:var(--volt);background:var(--volt) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m3.5 8.5 3 3 6-7' fill='none' stroke='%230B0D1C' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+.tile.wide{grid-column:1/-1}
+@media (max-width:520px){.tiles{grid-template-columns:1fr}}
+
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}
+.seg label{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:14px;border:1px solid var(--edge);background:var(--glass-2);cursor:pointer;font-size:14px;transition:border-color .2s,background .2s}
+.seg label b{display:block;font-size:14.5px}
+.seg label small{color:var(--haze);font-size:12.5px}
+.seg input{accent-color:var(--sodium);margin-top:3px;width:auto}
+.seg label:has(input:checked){border-color:var(--sodium);background:rgba(255,138,61,.09)}
+@media (max-width:420px){.seg{grid-template-columns:1fr}}
+
+/* fields */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid .full{grid-column:1/-1}
+@media (max-width:520px){.grid{grid-template-columns:1fr}}
+.field{display:grid;gap:6px;min-width:0}
+.field label{font-size:13px;font-weight:600;color:var(--soft)}
+.field label i{font-style:normal;color:var(--sodium)}
+input,select,textarea{width:100%;font:inherit;font-size:16px;color:var(--paper);background:rgba(255,255,255,.05);border:1px solid var(--edge);border-radius:12px;padding:12px 14px;transition:border-color .2s,box-shadow .2s}
+textarea{min-height:88px;resize:vertical}
+select option{background:#15172c;color:var(--paper)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--volt);box-shadow:0 0 0 3px rgba(125,243,255,.16)}
+.field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--bad)}
+.err{color:var(--bad);font-size:13px}
+.pre{display:flex;align-items:stretch}
+.pre span{display:grid;place-items:center;padding:0 12px;border:1px solid var(--edge);border-right:0;border-radius:12px 0 0 12px;background:rgba(255,255,255,.08);font-family:var(--f-mono);font-size:14px;color:var(--soft)}
+.pre input{border-radius:0 12px 12px 0}
+
+/* amount */
+.amount{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:18px;border:1px solid var(--edge);background:rgba(255,255,255,.05);transition:border-color .2s,box-shadow .2s}
+.amount:focus-within{border-color:var(--sodium);box-shadow:0 0 0 3px rgba(255,138,61,.18)}
+.amount.invalid{border-color:var(--bad)}
+.amount span{font-family:var(--f-display);font-weight:800;font-size:44px;color:var(--sodium);line-height:1}
+.amount input{border:0;background:transparent;box-shadow:none!important;padding:4px 0;font-family:var(--f-display);font-weight:800;font-size:44px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+.amount input::-webkit-outer-spin-button,.amount input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+.chips button{font:inherit;font-size:14px;font-weight:600;color:var(--soft);cursor:pointer;padding:8px 14px;border-radius:999px;border:1px solid var(--edge);background:var(--glass-2);font-variant-numeric:tabular-nums;transition:all .2s}
+.chips button:hover,.chips button.on{border-color:var(--sodium);color:var(--paper);background:rgba(255,138,61,.12)}
+.rule{font-size:13px;color:var(--haze);margin:6px 0 0}
+
+.summary{margin:20px 0 16px;border-radius:16px;border:1px solid var(--edge);overflow:hidden}
+.summary div{display:flex;justify-content:space-between;gap:16px;padding:10px 14px;font-size:14px;border-top:1px solid var(--edge)}
+.summary div:first-child{border-top:0}
+.summary dt{color:var(--haze);flex:none}
+.summary dd{margin:0;text-align:right;min-width:0;overflow-wrap:anywhere}
+.summary dl{margin:0}
+.agree{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--soft);cursor:pointer}
+.agree input{width:auto;margin-top:4px;accent-color:var(--sodium)}
+
+.alert{margin-top:14px;padding:12px 14px;border-radius:12px;background:rgba(255,107,107,.1);border:1px solid rgba(255,143,143,.45);color:#FFD0D0;font-size:14px}
+
+/* buttons */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 22px;border-radius:14px;font:inherit;font-weight:700;font-size:15px;text-decoration:none;cursor:pointer;border:0;transition:transform .2s,box-shadow .2s,background .2s,opacity .2s}
+.btn-sodium{background:var(--sodium);color:var(--sodium-ink);box-shadow:0 12px 40px -12px rgba(255,138,61,.8)}
+.btn-sodium:hover{transform:translateY(-2px);box-shadow:0 18px 50px -12px rgba(255,138,61,.95)}
+.btn-ghost{background:transparent;color:var(--soft);border:1px solid var(--edge)}
+.btn-ghost:hover{color:var(--paper);border-color:rgba(255,255,255,.3)}
+.btn-wa{background:#25D366;color:#062b14}
+.btn[disabled]{opacity:.55;cursor:not-allowed;transform:none}
+.btn-pay{width:100%;padding:18px 22px;font-size:17px}
+.btn-pay svg{width:18px;height:18px}
+.methods{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;margin-top:12px;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--haze)}
+
+/* done */
+.done{text-align:center;animation:rise .6s cubic-bezier(.2,.8,.2,1)}
+.tick{width:84px;height:84px;margin:4px auto 10px;display:block}
+.tick circle{stroke:var(--ok);stroke-dasharray:240;stroke-dashoffset:240;animation:draw .8s .1s forwards ease-out}
+.tick path{stroke:var(--ok);stroke-dasharray:60;stroke-dashoffset:60;animation:draw .5s .7s forwards ease-out}
+@keyframes draw{to{stroke-dashoffset:0}}
+.done h2{font-family:var(--f-display);font-weight:800;font-size:clamp(30px,4vw,40px);letter-spacing:-.03em;margin:0 0 6px}
+.done > p{color:var(--soft);margin:0 auto;max-width:44ch}
+.bid{display:inline-block;margin:18px 0 6px;padding:10px 18px;border-radius:14px;border:1px dashed var(--sodium);font-family:var(--f-mono);font-size:20px;letter-spacing:.06em;color:var(--sodium);user-select:all}
+.done .summary{text-align:left}
+.done .row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:6px}
+.paid{color:var(--ok)}
+
+/* live work order */
+.ticket{position:fixed;z-index:3;right:max(24px,env(safe-area-inset-right,0px));bottom:calc(24px + env(safe-area-inset-bottom,0px));width:300px;border-radius:18px;overflow:hidden;background:var(--glass);border:1px solid var(--edge);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);font-family:var(--f-mono);font-size:12px;box-shadow:0 30px 70px -30px rgba(0,0,0,.9);transform:perspective(900px) rotateY(-8deg);transition:transform .5s}
+.ticket:hover{transform:none}
+.ticket header{position:static;display:flex;justify-content:space-between;padding:10px 14px;background:var(--sodium);color:var(--sodium-ink);font-weight:500;letter-spacing:.12em}
+.ticket dl{margin:0;padding:6px 14px 12px}
+.ticket dl div{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--edge)}
+.ticket dl div:last-child{border-bottom:0}
+.ticket dt{color:var(--haze);flex:none}
+.ticket dd{margin:0;text-align:right;min-width:0;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.st{color:var(--sodium)}
+.st::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;margin-right:7px;box-shadow:0 0 8px currentColor;animation:blink 1.4s infinite}
+.st.ok{color:var(--ok)}
+@keyframes blink{50%{opacity:.3}}
+@media (max-width:1099px){.ticket{display:none}}
+
+/* busy overlay */
+.busy{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:rgba(8,9,20,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.busy div{display:grid;justify-items:center;gap:16px;font-weight:600}
+.ring{width:56px;height:56px;border-radius:50%;border:4px solid rgba(255,255,255,.15);border-top-color:var(--sodium);animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.tick circle,.tick path{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<canvas id="stage" aria-hidden="true"></canvas>
+<div class="vignette"></div>
+
+<header class="gut">
+  <div class="bar">
+    <a class="logo" href="./"><i>SS</i><span>SS Retail<small>SERVICES</small></span></a>
+    <div class="hright">
+      <span class="chip secure"><svg viewBox="0 0 16 16" fill="none" stroke="#5CF29A" stroke-width="1.8"><rect x="3" y="7" width="10" height="7" rx="2"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>Secure payment by Razorpay</span>
+      <a class="chip" href="./">← Back to website</a>
+    </div>
+  </div>
+</header>
+
+<main class="gut">
+  <section class="panel" aria-labelledby="h">
+    <p class="demo" id="demo" hidden>Preview mode: payment is simulated here and no money is charged. Real payments switch on once the page is live on your website.</p>
+
+    <div id="flow">
+      <div class="intro">
+        <div class="eyebrow">Book a service request</div>
+        <h1 id="h">Get your site <em>fixed</em>. Book in 3 steps.</h1>
+        <p>Choose the work, tell us about your site, and pay an advance of ₹500 or more. Your booking is confirmed only when the advance payment succeeds.</p>
+      </div>
+
+      <ol class="stepper" aria-label="Booking steps">
+        <li data-s="1"><b>1</b><span>Service</span></li>
+        <li data-s="2"><b>2</b><span>Site details</span></li>
+        <li data-s="3"><b>3</b><span>Advance</span></li>
+      </ol>
+
+      <form id="form" novalidate>
+        <fieldset data-step="1">
+          <legend>What needs repair?</legend>
+          <p class="hint">Select one or more. Each one lights up on the site behind this card.</p>
+          <div class="tiles" id="tiles" role="group" aria-label="Services"></div>
+          <p class="err" id="e-services" hidden>Choose at least one service to continue.</p>
+          <div class="seg" role="radiogroup" aria-label="Priority">
+            <label><input type="radio" name="priority" id="pr-sched" value="Scheduled" checked><span><b>Scheduled visit</b><small>Pick a preferred date</small></span></label>
+            <label><input type="radio" name="priority" id="pr-emerg" value="Emergency (24×7)"><span><b>Emergency</b><small>24×7 breakdown support</small></span></label>
+          </div>
+          <div class="nav"><span></span><button class="btn btn-sodium" type="button" id="next1">Continue →</button></div>
+        </fieldset>
+
+        <fieldset data-step="2" hidden>
+          <legend>Your site details</legend>
+          <p class="hint">We use these to plan the visit and send the right crew.</p>
+          <div class="grid">
+            <div class="field"><label for="name">Your name <i>*</i></label><input id="name" autocomplete="name" maxlength="80" placeholder="e.g. Rakesh Kumar"><small class="err" hidden>Enter your name.</small></div>
+            <div class="field"><label for="phone">Mobile number <i>*</i></label><div class="pre"><span>+91</span><input id="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="10" placeholder="98765 43210"></div><small class="err" hidden>Enter a valid 10-digit mobile number.</small></div>
+            <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" maxlength="100" placeholder="For the payment receipt"><small class="err" hidden>Check the email address.</small></div>
+            <div class="field"><label for="siteType">Site type <i>*</i></label>
+              <select id="siteType"><option value="">Choose…</option><option>Fuel Station</option><option>Industrial Plant</option><option>Commercial Building</option><option>Hotel</option><option>Hospital</option><option>Govt / PSU</option><option>Other</option></select><small class="err" hidden>Choose a site type.</small></div>
+            <div class="field full"><label for="siteName">Site / outlet name</label><input id="siteName" maxlength="100" placeholder="e.g. outlet name or company name"></div>
+            <div class="field full"><label for="address">Site address <i>*</i></label><input id="address" autocomplete="street-address" maxlength="200" placeholder="Street, area, landmark"><small class="err" hidden>Enter the site address.</small></div>
+            <div class="field"><label for="city">City / district <i>*</i></label><input id="city" maxlength="60" placeholder="e.g. Bokaro"><small class="err" hidden>Enter the city or district.</small></div>
+            <div class="field" id="dateField"><label for="date">Preferred visit date</label><input id="date" type="date"><small class="err" hidden>Choose today or a later date.</small></div>
+            <div class="field full"><label for="details">Describe the problem</label><textarea id="details" maxlength="240" placeholder="e.g. 3 canopy lights not working since the storm, panel MCB tripping"></textarea></div>
+          </div>
+          <div class="nav"><button class="btn btn-ghost" type="button" data-back="1">← Back</button><button class="btn btn-sodium" type="button" id="next2">Continue →</button></div>
+        </fieldset>
+
+        <fieldset data-step="3" hidden>
+          <legend>Pay an advance to confirm</legend>
+          <p class="hint">Enter any amount of ₹500 or more. Watch the coin stack grow.</p>
+          <label class="amount" id="amountBox" for="amount"><span>₹</span><input id="amount" type="number" inputmode="numeric" min="500" step="1" value="1000" aria-describedby="amtRule"></label>
+          <div class="chips" id="chips"><button type="button" data-v="500">₹500</button><button type="button" data-v="1000">₹1,000</button><button type="button" data-v="2000">₹2,000</button><button type="button" data-v="5000">₹5,000</button></div>
+          <p class="rule" id="amtRule">Minimum advance ₹500.</p>
+          <p class="err" id="e-amount" hidden>The advance must be at least ₹500.</p>
+          <div class="summary"><dl id="sum"></dl></div>
+          <label class="agree"><input type="checkbox" id="agree"><span>I understand my service request is accepted only after the advance payment is successful.</span></label>
+          <p class="err" id="e-agree" hidden>Tick the box to continue.</p>
+          <button class="btn btn-sodium btn-pay" type="button" id="pay" style="margin-top:18px"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="10" height="7" rx="2"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg><span id="payLabel">Pay ₹1,000 &amp; confirm booking</span></button>
+          <div class="methods"><span>UPI</span><span>Cards</span><span>Net banking</span><span>Wallets</span></div>
+          <div class="alert" id="payErr" role="alert" hidden></div>
+          <div class="nav"><button class="btn btn-ghost" type="button" data-back="2">← Back</button><span></span></div>
+        </fieldset>
+      </form>
+    </div>
+
+    <div class="done" id="done" hidden>
+      <svg class="tick" viewBox="0 0 84 84" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><circle cx="42" cy="42" r="37"/><path d="m27 43 10 10 20-22"/></svg>
+      <h2 id="doneTitle" tabindex="-1">Booking confirmed</h2>
+      <p id="doneMsg">Your advance is received. Our team will call you to schedule the visit.</p>
+      <div class="bid" id="doneId">SSR-000000-XXXX</div>
+      <div class="summary"><dl id="doneSum"></dl></div>
+      <div class="row">
+        <a class="btn btn-wa" id="doneWa" href="https://wa.me/919905719715" target="_blank" rel="noopener">Send booking on WhatsApp</a>
+        <a class="btn btn-ghost" href="./">Back to website</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<aside class="ticket" aria-label="Your work order">
+  <header><span>WORK ORDER</span><span id="tkId">DRAFT</span></header>
+  <dl>
+    <div><dt>Services</dt><dd id="tkSvc">None yet</dd></div>
+    <div><dt>Priority</dt><dd id="tkPri">Scheduled</dd></div>
+    <div><dt>Site</dt><dd id="tkSite">—</dd></div>
+    <div><dt>Advance</dt><dd id="tkAmt">₹1,000</dd></div>
+    <div><dt>Status</dt><dd><span class="st" id="tkSt">Awaiting advance</span></dd></div>
+  </dl>
+</aside>
+
+<div class="busy" id="busy" hidden><div><span class="ring"></span><span id="busyText">Creating your booking…</span></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/GammaCorrectionShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+/* =================== 3D SCENE =================== */
+const Scene3D=(function(){
+  const noop={setStep(){},setServices(){},setAmount(){},celebrate(){}};
+  if(typeof THREE==='undefined')return noop;
+  const canvas=document.getElementById('stage');
+  let renderer;
+  try{renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});}catch(e){return noop;}
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.75));
+  const scene=new THREE.Scene();
+  scene.fog=new THREE.FogExp2(0x1a1830,.018);
+  const camera=new THREE.PerspectiveCamera(45,1,.1,800);
+  const SODIUM=0xFF8A3D,VOLT=0x7DF3FF;
+  const std=(c,r=.55,m=.3,x={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:r,metalness:m},x));
+  const glow=c=>new THREE.MeshBasicMaterial({color:c});
+  const additive=(c,o)=>new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:o,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide});
+  function tex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.anisotropy=4;return t;}
+
+  /* sky + stars */
+  scene.add(new THREE.Mesh(new THREE.SphereGeometry(400,32,16),new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,fog:false,
+    uniforms:{top:{value:new THREE.Color(0x05071a)},mid:{value:new THREE.Color(0x2a2148)},hor:{value:new THREE.Color(0xd8663f)}},
+    vertexShader:'varying vec3 vP;void main(){vP=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+    fragmentShader:'uniform vec3 top;uniform vec3 mid;uniform vec3 hor;varying vec3 vP;void main(){float h=vP.y;float s=max(0.,dot(normalize(vec2(vP.x,vP.z)),normalize(vec2(-.5,-1.))));vec3 c=mix(mid,top,smoothstep(.05,.55,h));c=mix(c,hor,(1.-smoothstep(-.02,.2,h))*(.35+.65*pow(s,3.)));gl_FragColor=vec4(c,1.);}'})));
+  {const n=700,p=new Float32Array(n*3);for(let i=0;i<n;i++){const th=Math.random()*6.283,ph=Math.random()*1.3;p[i*3]=Math.cos(th)*Math.sin(ph)*380;p[i*3+1]=Math.cos(ph)*380;p[i*3+2]=Math.sin(th)*Math.sin(ph)*380;}
+   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));scene.add(new THREE.Points(g,new THREE.PointsMaterial({color:0xffffff,size:1.2,sizeAttenuation:false,transparent:true,opacity:.7,fog:false})));}
+
+  scene.add(new THREE.HemisphereLight(0x5a6aa8,0x1a1012,.6));
+  const moon=new THREE.DirectionalLight(0xaab8ff,.35);moon.position.set(20,40,20);scene.add(moon);
+
+  /* wet asphalt + forecourt slab */
+  const asphalt=tex(512,512,(c,w,h)=>{c.fillStyle='#24242c';c.fillRect(0,0,w,h);for(let i=0;i<12000;i++){const v=28+Math.random()*40;c.fillStyle=`rgb(${v},${v},${v+6})`;c.fillRect(Math.random()*w,Math.random()*h,1.5,1.5);}
+    for(let i=0;i<22;i++){c.fillStyle='rgba(8,8,12,.4)';c.beginPath();c.ellipse(Math.random()*w,Math.random()*h,20+Math.random()*60,10+Math.random()*30,Math.random()*3,0,7);c.fill();}});
+  asphalt.wrapS=asphalt.wrapT=THREE.RepeatWrapping;asphalt.repeat.set(30,30);
+  const ground=new THREE.Mesh(new THREE.PlaneGeometry(300,300),std(0xffffff,.28,.35,{map:asphalt}));ground.rotation.x=-Math.PI/2;scene.add(ground);
+  const slab=new THREE.Mesh(new THREE.BoxGeometry(24,.12,15),std(0x4d4f58,.5,.2));slab.position.set(0,.06,0);scene.add(slab);
+  const line=(x,z,w,d,c=0xE8C547)=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(w,d),std(c,.6,0));m.rotation.x=-Math.PI/2;m.position.set(x,.13,z);scene.add(m);};
+  line(0,7,22,.14);line(0,-7,22,.14);
+
+  /* repairable things: each has b(t) brightness, fix 0..1 */
+  const fixables=[];
+  function fixable(kind,phase){const f={kind,phase,fix:0,target:0,delay:0};fixables.push(f);return f;}
+  function bright(f,t){
+    let broken;
+    if(f.kind==='ok')broken=1;
+    else if(f.kind==='off')broken=.04;
+    else{ // flicker
+      const n=Math.sin(t*23+f.phase*7)+Math.sin(t*37.3+f.phase*3);
+      broken=reduce?.45:(n>1.2||Math.random()<.04)?.08:.55+.25*Math.sin(t*9+f.phase);
+    }
+    return broken+(1-broken)*f.fix;
+  }
+
+  /* ===== canopy ===== */
+  const CY=6.2;
+  const roof=new THREE.Mesh(new THREE.BoxGeometry(20,1,12),std(0xe9ecf1,.35,.2));roof.position.y=CY+.6;scene.add(roof);
+  const fascia=new THREE.Mesh(new THREE.BoxGeometry(20.1,.45,12.1),glow(SODIUM));fascia.position.y=CY+.4;scene.add(fascia);
+  const fasciaTop=new THREE.Mesh(new THREE.BoxGeometry(20.12,.12,12.12),std(0x23263a,.4,.6));fasciaTop.position.y=CY+.95;scene.add(fasciaTop);
+  // false ceiling tiles
+  const tileMat=std(0xd2d5dc,.6,.15),tileGeo=new THREE.PlaneGeometry(1.18,1.18);
+  const droop=[];
+  for(let ix=-7;ix<=7;ix++)for(let iz=-4;iz<=4;iz++){
+    const m=new THREE.Mesh(tileGeo,tileMat);m.rotation.x=Math.PI/2;m.position.set(ix*1.25,CY+.08,iz*1.25);scene.add(m);
+    if((ix===3&&iz===2)||(ix===4&&iz===2)||(ix===4&&iz===1)||(ix===-3&&iz===3)||(ix===5&&iz===-1)){
+      const piv=new THREE.Group();piv.position.set(ix*1.25-.6,CY+.08,iz*1.25);scene.add(piv);
+      scene.remove(m);m.position.set(.6,0,0);piv.add(m);droop.push({piv,ang:.35+Math.random()*.4,f:fixable('droop',ix)});
+    }
+  }
+  // grid T-bars
+  {const pts=[];for(let ix=-7.5;ix<=7.5;ix++){pts.push(new THREE.Vector3(ix*1.25,CY+.06,-5.6),new THREE.Vector3(ix*1.25,CY+.06,5.6));}
+   for(let iz=-4.5;iz<=4.5;iz++){pts.push(new THREE.Vector3(-9.4,CY+.06,iz*1.25),new THREE.Vector3(9.4,CY+.06,iz*1.25));}
+   scene.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:0x8d919b})));}
+  // canopy light fittings
+  const fittings=[];
+  const kinds=['ok','flicker','ok','off','flicker','ok','off','flicker'];
+  [-6.25,-2.5,2.5,6.25].forEach((x,i)=>[-2.5,2.5].forEach((z,j)=>{
+    const m=new THREE.Mesh(new THREE.BoxGeometry(2.3,.08,.75),glow(0xffffff));m.position.set(x,CY,z);scene.add(m);
+    fittings.push({m,f:fixable(kinds[i*2+j],i*2+j)});}));
+  const canopyLight=new THREE.PointLight(0xf3f7ff,1,26,1.6);canopyLight.position.set(0,CY-.6,0);scene.add(canopyLight);
+  const canopyLight2=new THREE.PointLight(0xf3f7ff,1,20,1.6);canopyLight2.position.set(5,CY-.6,2);scene.add(canopyLight2);
+  // columns
+  [[-7.5,-4],[7.5,-4],[-7.5,4],[7.5,4]].forEach(([x,z])=>{const c=new THREE.Mesh(new THREE.BoxGeometry(.55,CY,.55),std(0xcfd4dc,.3,.6));c.position.set(x,CY/2,z);scene.add(c);
+    const clad=new THREE.Mesh(new THREE.BoxGeometry(.6,.45,.6),glow(SODIUM));clad.position.set(x,.9,z);scene.add(clad);});
+  // dispenser
+  const disp=new THREE.Group();disp.position.set(-1.5,0,0);scene.add(disp);
+  {const island=new THREE.Mesh(new THREE.BoxGeometry(1.6,.3,4),std(0xd8d2c4,.7,0));island.position.y=.27;disp.add(island);
+   const body=new THREE.Mesh(new THREE.BoxGeometry(1.1,2.4,1.6),std(0xf1f2f4,.3,.25));body.position.y=1.6;disp.add(body);
+   const head=new THREE.Mesh(new THREE.BoxGeometry(1.15,.5,1.65),std(0x23263a,.4,.5));head.position.y=3.05;disp.add(head);
+   const band=new THREE.Mesh(new THREE.BoxGeometry(1.16,.12,1.66),glow(SODIUM));band.position.y=2.8;disp.add(band);
+   [-1,1].forEach(s=>{const sc=new THREE.Mesh(new THREE.PlaneGeometry(.7,.4),glow(VOLT));sc.position.set(s*.56,2.2,0);sc.rotation.y=s*Math.PI/2;disp.add(sc);});}
+
+  /* ===== electrical panel ===== */
+  const panel=new THREE.Group();panel.position.set(8.4,0,-2.6);panel.rotation.y=-Math.PI/2.4;scene.add(panel);
+  {const plinth=new THREE.Mesh(new THREE.BoxGeometry(2,.25,.95),std(0x6b6d72,.9,0));plinth.position.y=.12;panel.add(plinth);
+   const cab=new THREE.Mesh(new THREE.BoxGeometry(1.8,2.3,.8),std(0xc7cbd2,.38,.55));cab.position.y=1.4;panel.add(cab);
+   const door=new THREE.Mesh(new THREE.PlaneGeometry(1.6,2.1),std(0xb7bcc4,.35,.6));door.position.set(0,1.4,.41);panel.add(door);
+   const warn=new THREE.Mesh(new THREE.PlaneGeometry(.42,.36),glow(0xE8C547));warn.position.set(-.5,2.2,.42);panel.add(warn);
+   for(let r=0;r<3;r++)for(let k=0;k<5;k++){const br=new THREE.Mesh(new THREE.BoxGeometry(.18,.32,.05),std(0x2b2e3c,.5,.3));br.position.set(-.45+k*.24,1.75-r*.48,.43);panel.add(br);}}
+  const leds=[0,1,2].map(i=>{const m=new THREE.Mesh(new THREE.SphereGeometry(.06,10,10),glow(0xff3030));m.position.set(.25+i*.2,2.25,.43);panel.add(m);return m;});
+  const panelFix=fixable('flicker',3);
+
+  /* ===== yard light pole ===== */
+  const yard=new THREE.Group();yard.position.set(13,0,-5);scene.add(yard);
+  {const pole=new THREE.Mesh(new THREE.CylinderGeometry(.12,.18,10,10),std(0x4a4f5e,.4,.7));pole.position.y=5;yard.add(pole);
+   const arm=new THREE.Mesh(new THREE.BoxGeometry(2.2,.12,.12),std(0x4a4f5e,.4,.7));arm.position.set(-1,9.9,0);yard.add(arm);
+   const housing=new THREE.Mesh(new THREE.BoxGeometry(1.2,.22,.6),std(0x2b2e3c,.4,.5));housing.position.set(-2,9.85,0);yard.add(housing);}
+  const yardLamp=new THREE.Mesh(new THREE.BoxGeometry(1,.05,.45),glow(0xffd29a));yardLamp.position.set(-2,9.72,0);yard.add(yardLamp);
+  const yardBeam=new THREE.Mesh(new THREE.ConeGeometry(3.2,9.6,24,1,true),additive(0xffc27a,.1));yardBeam.position.set(-2,4.9,0);yard.add(yardBeam);
+  const yardPL=new THREE.PointLight(0xffb468,1.5,18,1.8);yardPL.position.set(-2,9,0);yard.add(yardPL);
+  const yardFix=fixable('flicker',5);
+
+  /* ===== hoarding ===== */
+  const hoard=new THREE.Group();hoard.position.set(-2,0,-17);scene.add(hoard);
+  const boardTex=tex(1024,460,(c,w,h)=>{const g=c.createLinearGradient(0,0,w,h);g.addColorStop(0,'#1c1f3a');g.addColorStop(1,'#3a1d2c');c.fillStyle=g;c.fillRect(0,0,w,h);
+    c.fillStyle='#FF8A3D';c.fillRect(0,0,w,18);c.fillRect(0,h-18,w,18);
+    c.fillStyle='#FF8A3D';c.font='800 150px Arial Black, Arial';c.fillText('SS',60,230);
+    c.fillStyle='#F3EFEA';c.font='800 92px Arial Black, Arial';c.fillText('RETAIL SERVICES',300,200);
+    c.fillStyle='#7DF3FF';c.font='600 44px Arial';c.fillText('Civil · Electrical · Mechanical',300,280);
+    c.fillStyle='#F3EFEA';c.font='600 40px Arial';c.fillText('24×7 Emergency Support  ·  Chas, Bokaro',60,390);});
+  const boardMat=new THREE.MeshBasicMaterial({map:boardTex,color:0x555555});
+  {[-3.5,3.5].forEach(x=>{const p=new THREE.Mesh(new THREE.BoxGeometry(.35,6,.35),std(0x4a4f5e,.4,.7));p.position.set(x,3,0);hoard.add(p);});
+   const frame=new THREE.Mesh(new THREE.BoxGeometry(10.4,4.8,.35),std(0x23263a,.4,.6));frame.position.set(0,8.2,-.15);hoard.add(frame);
+   const board=new THREE.Mesh(new THREE.PlaneGeometry(10,4.4),boardMat);board.position.set(0,8.2,.04);hoard.add(board);
+   const walk=new THREE.Mesh(new THREE.BoxGeometry(10.4,.1,.9),std(0x5b6070,.6,.5));walk.position.set(0,5.75,.45);hoard.add(walk);}
+  const floods=[-3.4,0,3.4].map((x,i)=>{
+    const arm=new THREE.Mesh(new THREE.BoxGeometry(.08,.08,1.2),std(0x4a4f5e));arm.position.set(x,10.75,.6);hoard.add(arm);
+    const head=new THREE.Mesh(new THREE.BoxGeometry(.55,.22,.35),std(0x2b2e3c));head.position.set(x,10.7,1.2);head.rotation.x=.7;hoard.add(head);
+    const lens=new THREE.Mesh(new THREE.PlaneGeometry(.45,.16),glow(0xfff2dc));lens.position.set(x,10.6,1.33);lens.rotation.x=.7+Math.PI/2;hoard.add(lens);
+    const beam=new THREE.Mesh(new THREE.ConeGeometry(2.4,3.6,20,1,true),additive(0xfff0d8,.08));beam.position.set(x,9.1,.7);beam.rotation.x=-.32;hoard.add(beam);
+    return {lens,beam,f:fixable(['off','flicker','off'][i],i+7)};});
+
+  /* ===== labels (one per service) ===== */
+  function labelTex(text,on){return tex(512,128,(c,w,h)=>{c.clearRect(0,0,w,h);
+    const r=56;c.beginPath();c.moveTo(r,8);c.arcTo(w-8,8,w-8,h-8,r);c.arcTo(w-8,h-8,8,h-8,r);c.arcTo(8,h-8,8,8,r);c.arcTo(8,8,w-8,8,r);c.closePath();
+    c.fillStyle=on?'rgba(125,243,255,.95)':'rgba(14,16,34,.72)';c.fill();c.lineWidth=4;c.strokeStyle=on?'#ffffff':'rgba(255,255,255,.35)';c.stroke();
+    c.fillStyle=on?'#0B0D1C':'#F3EFEA';c.font='700 46px Arial';c.textAlign='center';c.textBaseline='middle';c.fillText(text,w/2,h/2+2);});}
+  const LW=.17;let labelVis=1;
+  const LABELS={
+    'canopy-lights':{text:'CANOPY LIGHTS',pos:[-4.3,CY-1.1,3.6],ring:[-4.3,3]},
+    'false-ceiling':{text:'FALSE CEILING',pos:[4.8,CY-1.5,1.6],ring:[4.6,2]},
+    'electrical-panel':{text:'ELECTRICAL PANEL',pos:[8.2,3.4,-2.2],ring:[8.4,-2.6]},
+    'yard-lights':{text:'YARD LIGHTS',pos:[11,11,-5],ring:[11,-5]},
+    'hoarding-lights':{text:'HOARDING LIGHTS',pos:[-2,11.8,-16],ring:[-2,-16]}
+  };
+  Object.entries(LABELS).forEach(([id,L])=>{
+    L.off=labelTex(L.text,false);L.on=labelTex(L.text,true);
+    L.sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:L.off,transparent:true,depthTest:false,opacity:.85,sizeAttenuation:false}));
+    L.sprite.scale.set(LW,LW/4,1);L.sprite.position.set(...L.pos);L.sprite.renderOrder=10;scene.add(L.sprite);
+    L.ringM=new THREE.Mesh(new THREE.RingGeometry(1.1,1.35,48),additive(VOLT,0));L.ringM.rotation.x=-Math.PI/2;L.ringM.position.set(L.ring[0],.15,L.ring[1]);scene.add(L.ringM);
+    L.sel=false;});
+
+  /* ===== coins ===== */
+  const coinFace=tex(256,256,(c,w,h)=>{const g=c.createRadialGradient(100,90,10,128,128,130);g.addColorStop(0,'#FFE7A3');g.addColorStop(.6,'#E7B142');g.addColorStop(1,'#A86F12');
+    c.fillStyle=g;c.fillRect(0,0,w,h);c.strokeStyle='rgba(120,70,0,.7)';c.lineWidth=8;c.beginPath();c.arc(128,128,108,0,7);c.stroke();
+    c.lineWidth=3;c.beginPath();c.arc(128,128,94,0,7);c.stroke();c.fillStyle='#7A4A06';c.font='bold 140px Arial';c.textAlign='center';c.textBaseline='middle';c.fillText('₹',128,136);});
+  const coinSide=std(0xE0A32B,.3,.9,{emissive:0x3a2200,emissiveIntensity:.5});
+  const coinTop=new THREE.MeshStandardMaterial({map:coinFace,metalness:.75,roughness:.32,emissive:0x2a1800,emissiveIntensity:.5});
+  const coinGeo=new THREE.CylinderGeometry(.62,.62,.13,40);
+  const pedestal=new THREE.Group();pedestal.position.set(4.6,0,5.4);scene.add(pedestal);
+  {const base=new THREE.Mesh(new THREE.CylinderGeometry(1.15,1.3,1.3,6),std(0x23263a,.35,.6));base.position.y=.65;pedestal.add(base);
+   const rim=new THREE.Mesh(new THREE.TorusGeometry(1.13,.05,8,6),glow(SODIUM));rim.rotation.x=Math.PI/2;rim.rotation.z=Math.PI/6;rim.position.y=1.3;pedestal.add(rim);}
+  const coinPL=new THREE.PointLight(0xffc25a,0,8,2);coinPL.position.set(0,3,1.2);pedestal.add(coinPL);
+  const stack=[];let coinTarget=0,coinsShown=false;
+  function syncCoins(){
+    const want=coinsShown?coinTarget:0;
+    while(stack.length<want){const m=new THREE.Mesh(coinGeo,[coinSide,coinTop,coinTop]);const i=stack.length;
+      m.userData={y:1.37+i*.135,ox:(Math.random()-.5)*.06,oz:(Math.random()-.5)*.06};m.position.set(m.userData.ox,m.userData.y+4,m.userData.oz);m.rotation.y=Math.random()*6;pedestal.add(m);stack.push(m);}
+    while(stack.length>want){const m=stack.pop();pedestal.remove(m);}
+  }
+  const bigCoin=new THREE.Mesh(new THREE.CylinderGeometry(.95,.95,.18,48),[coinSide,coinTop,coinTop]);bigCoin.geometry.rotateX(Math.PI/2);bigCoin.geometry.rotateZ(Math.PI/2);bigCoin.scale.setScalar(.001);pedestal.add(bigCoin);
+
+  /* ===== particles ===== */
+  const D=320,dp=new Float32Array(D*3);for(let i=0;i<D;i++){dp[i*3]=(Math.random()-.5)*50;dp[i*3+1]=Math.random()*14;dp[i*3+2]=(Math.random()-.5)*40;}
+  const dg=new THREE.BufferGeometry();dg.setAttribute('position',new THREE.BufferAttribute(dp,3));
+  const dust=new THREE.Points(dg,new THREE.PointsMaterial({color:0x9fbbe0,size:.06,transparent:true,opacity:.45}));scene.add(dust);
+  const B=380,bp=new Float32Array(B*3),bv=[];const bg=new THREE.BufferGeometry();bg.setAttribute('position',new THREE.BufferAttribute(bp,3));
+  for(let i=0;i<B;i++){bv.push(new THREE.Vector3());bp[i*3+1]=-99;}
+  const burst=new THREE.Points(bg,new THREE.PointsMaterial({color:0xffcf6a,size:.14,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));scene.add(burst);
+  let bursting=0;
+  function fireBurst(){const top=new THREE.Vector3();pedestal.localToWorld(top.set(0,1.4+stack.length*.135+.8,0));
+    for(let i=0;i<B;i++){bp[i*3]=top.x;bp[i*3+1]=top.y;bp[i*3+2]=top.z;const a=Math.random()*6.283,s=.08+Math.random()*.2;bv[i].set(Math.cos(a)*s,.12+Math.random()*.28,Math.sin(a)*s);}bursting=3.2;}
+
+  /* ===== post ===== */
+  let composer=null,bloom=null;
+  if(THREE.EffectComposer&&THREE.UnrealBloomPass){composer=new THREE.EffectComposer(renderer);composer.addPass(new THREE.RenderPass(scene,camera));
+    bloom=new THREE.UnrealBloomPass(new THREE.Vector2(innerWidth*.5,innerHeight*.5),.9,.5,.62);composer.addPass(bloom);
+    if(THREE.GammaCorrectionShader)composer.addPass(new THREE.ShaderPass(THREE.GammaCorrectionShader));}
+  else renderer.outputEncoding=THREE.sRGBEncoding;
+
+  /* ===== camera ===== */
+  const V=(a)=>new THREE.Vector3(...a);
+  const SHOTS={1:{p:V([5,3.4,17.5]),l:V([2,4.8,-3])},2:{p:V([-1,2.4,13.5]),l:V([2.5,5.6,-3])},3:{p:V([9.2,3.4,12.8]),l:V([4.4,2.6,4.6])},4:{p:V([1,8.5,24]),l:V([2,3.6,-4])}};
+  let shot=SHOTS[1];const cp=V([20,14,34]),cl=V([0,3,0]);
+  let mx=0,my=0,tmx=0,tmy=0;
+  addEventListener('pointermove',e=>{tmx=e.clientX/innerWidth-.5;tmy=e.clientY/innerHeight-.5;},{passive:true});
+  function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;
+    if(w>=900){camera.fov=45;camera.setViewOffset(w,h,-w*.2,0,w,h);}else{camera.fov=60;camera.setViewOffset(w,h,0,h*.24,w,h);}
+    camera.updateProjectionMatrix();if(composer){composer.setSize(w,h);bloom.resolution.set(w*.5,h*.5);}}
+  addEventListener('resize',resize);resize();
+  if(reduce){cp.copy(shot.p);cl.copy(shot.l);}
+
+  const clock=new THREE.Clock();
+  function frame(){
+    const dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;
+    mx+=(tmx-mx)*.04;my+=(tmy-my)*.04;
+    const k=reduce?1:1-Math.pow(.04,dt);
+    const tp=shot.p.clone();tp.x+=mx*2.4+(reduce?0:Math.sin(t*.15)*.6);tp.y+=-my*1.2;
+    cp.lerp(tp,k);cl.lerp(shot.l,k);camera.position.copy(cp);camera.lookAt(cl);
+
+    // repairs
+    fixables.forEach(f=>{if(f.delay>0){f.delay-=dt;return;}f.fix+=(f.target-f.fix)*Math.min(1,dt*3);});
+    let sum=0;fittings.forEach(({m,f})=>{const b=bright(f,t);sum+=b;m.material.color.setScalar(.1+.9*b);});
+    canopyLight.intensity=.25+1.1*sum/fittings.length;canopyLight2.intensity=.15+.9*sum/fittings.length;
+    droop.forEach(d=>{d.piv.rotation.z=-d.ang*(1-d.f.fix);});
+    const yb=bright(yardFix,t);yardLamp.material.color.setScalar(.1+.9*yb);yardBeam.material.opacity=.11*yb;yardPL.intensity=1.6*yb;
+    let hs=0;floods.forEach(fl=>{const b=bright(fl.f,t);hs+=b;fl.lens.material.color.setScalar(.1+.9*b);fl.beam.material.opacity=.09*b;});
+    boardMat.color.setScalar(.22+.78*hs/3);
+    const pf=panelFix.fix,blinkOn=reduce||Math.sin(t*8)>0;
+    leds.forEach((l,i)=>{if(pf>.5)l.material.color.setHex(0x3cff7a);else l.material.color.setHex(i===1?(blinkOn?0xff2a2a:0x2a0606):(i===0?0x3cff7a:0xff8a00));});
+
+    // labels
+    Object.values(LABELS).forEach((L,i)=>{const s=L.sel;L.sprite.material.opacity+=((s?1:.7)*labelVis-L.sprite.material.opacity)*.1;
+      const sc=s?1.12:.95;L.sprite.scale.x+=(LW*sc-L.sprite.scale.x)*.12;L.sprite.scale.y=L.sprite.scale.x/4;
+      L.sprite.position.y=L.pos[1]+(s&&!reduce?Math.sin(t*2.4+i)*.12:0);
+      L.ringM.material.opacity+=((s?.55+.25*Math.sin(t*4+i):0)-L.ringM.material.opacity)*.15;
+      const rs=s&&!reduce?1+.08*Math.sin(t*3+i):1;L.ringM.scale.set(rs,rs,1);});
+
+    // coins
+    stack.forEach((m,i)=>{m.position.y+=(m.userData.y-m.position.y)*Math.min(1,dt*(6+i*.15));});
+    const topY=1.37+Math.max(stack.length,1)*.135;
+    const bigS=coinsShown?1:.001;bigCoin.scale.setScalar(bigCoin.scale.x+(bigS-bigCoin.scale.x)*.1);
+    bigCoin.position.y=topY+1.25+(reduce?0:Math.sin(t*1.8)*.12);bigCoin.rotation.y=reduce?.5:t*1.6;
+    coinPL.intensity+=((coinsShown?1.8:0)-coinPL.intensity)*.1;
+
+    if(!reduce){for(let i=0;i<D;i++){dp[i*3+1]+=dt*.15;if(dp[i*3+1]>14)dp[i*3+1]=0;}dg.attributes.position.needsUpdate=true;}
+    if(bursting>0){bursting-=dt;for(let i=0;i<B;i++){bv[i].y-=dt*.35;bp[i*3]+=bv[i].x;bp[i*3+1]+=bv[i].y;bp[i*3+2]+=bv[i].z;if(bp[i*3+1]<0){bp[i*3+1]=0;bv[i].multiplyScalar(.4);bv[i].y=Math.abs(bv[i].y)*.3;}}
+      if(bursting<=0)for(let i=0;i<B;i++)bp[i*3+1]=-99;bg.attributes.position.needsUpdate=true;}
+
+    composer?composer.render():renderer.render(scene,camera);
+    requestAnimationFrame(frame);
+  }
+  frame();
+
+  return{
+    setStep(n){shot=SHOTS[n]||SHOTS[1];coinsShown=n>=3;labelVis=n===3?.25:1;syncCoins();},
+    setServices(set){Object.entries(LABELS).forEach(([id,L])=>{L.sel=set.has(id);L.sprite.material.map=L.sel?L.on:L.off;L.sprite.material.needsUpdate=true;});},
+    setAmount(a){coinTarget=Math.max(1,Math.min(24,Math.round((a||0)/500)));syncCoins();},
+    celebrate(){labelVis=1;fixables.forEach((f,i)=>{f.target=1;f.delay=.25+i*.12;});fireBurst();setTimeout(()=>{shot=SHOTS[4];},1400);}
+  };
+})();
+
+/* =================== BOOKING FLOW =================== */
+(function(){
+  const WA='919905719715';
+  const SERVICES=[
+    {id:'canopy-lights',name:'Canopy light repair',desc:'Canopy LED or flood fittings off, dim or flickering',icon:'<path d="M3 7h22M5 7v2h18V7"/><path d="M9 12l-2 4M14 12v5M19 12l2 4"/>'},
+    {id:'yard-lights',name:'Yard light repair',desc:'Yard, pole and compound lighting',icon:'<path d="M9 26V6h8"/><path d="M14 6h8l-1 3h-6z"/><path d="M15 12l-2 4M18 12v4M21 12l2 4"/>'},
+    {id:'hoarding-lights',name:'Hoarding light repair',desc:'Hoarding and signage flood lights',icon:'<rect x="3" y="7" width="22" height="11" rx="1"/><path d="M9 18v8M19 18v8M8 4l2 3M14 3v4M20 4l-2 3"/>'},
+    {id:'false-ceiling',name:'Canopy false ceiling repair',desc:'Damaged, sagging or water-stained ceiling panels',icon:'<path d="M3 6h22v3H3z"/><path d="M5 9v3h7v-3M16 9l3 6 4-1-2-5"/>'},
+    {id:'electrical-panel',name:'Electrical panel work',desc:'LT panel, MCB/MCCB tripping, stabilizer and CVT, earthing faults',icon:'<rect x="6" y="3" width="16" height="22" rx="2"/><path d="M10 8h2M16 8h2M10 13h2M16 13h2"/><path d="M15 17l-2 3h3l-2 3"/>'}
+  ];
+  const byId=Object.fromEntries(SERVICES.map(s=>[s.id,s]));
+  const $=id=>document.getElementById(id);
+  const fmt=n=>'₹'+Number(n||0).toLocaleString('en-IN');
+  const sel=new Set();
+  const host=location.hostname;
+  const LIVE_HOST=/(^|\.)ssretailservices\.in$|\.netlify\.app$/.test(host);
+  const DEMO=!LIVE_HOST&&(typeof window.Razorpay==='undefined'||/[?&]demo=1/.test(location.search));
+  if(DEMO)$('demo').hidden=false;
+
+  /* tiles */
+  const tilesEl=$('tiles');
+  SERVICES.forEach((s,i)=>{
+    const b=document.createElement('button');b.type='button';b.className='tile'+(i===SERVICES.length-1?' wide':'');b.id='svc-'+s.id;
+    b.setAttribute('role','checkbox');b.setAttribute('aria-checked','false');
+    b.innerHTML=`<svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${s.icon}</svg><b>${s.name}</b><small>${s.desc}</small>`;
+    b.addEventListener('click',()=>{sel.has(s.id)?sel.delete(s.id):sel.add(s.id);syncTiles();$('e-services').hidden=true;});
+    tilesEl.appendChild(b);
+  });
+  function syncTiles(){SERVICES.forEach(s=>$('svc-'+s.id).setAttribute('aria-checked',sel.has(s.id)));Scene3D.setServices(sel);ticket();}
+  // preselect from link, e.g. book.html?service=canopy-lights or #canopy-lights
+  const pre=(new URLSearchParams(location.search).get('service')||location.hash.slice(1)||'').split(',');
+  pre.forEach(p=>{if(byId[p])sel.add(p);});syncTiles();
+
+  /* date min = today (IST) */
+  const today=new Date(Date.now()+330*60000).toISOString().slice(0,10);$('date').min=today;
+
+  /* steps */
+  let step=1;
+  function go(n,scroll=true){
+    step=n;document.querySelectorAll('fieldset[data-step]').forEach(f=>f.hidden=+f.dataset.step!==n);
+    document.querySelectorAll('.stepper li').forEach(li=>{const s=+li.dataset.s;li.classList.toggle('on',s===n);li.classList.toggle('done',s<n);});
+    Scene3D.setStep(n);if(n===3){summary();onAmount();}
+    const fs=document.querySelector(`fieldset[data-step="${n}"] legend`);
+    if(scroll&&innerWidth<900){document.querySelector('.panel').scrollIntoView({behavior:'smooth',block:'start'});}
+    ticket();
+  }
+  go(1,false);
+  document.querySelectorAll('[data-back]').forEach(b=>b.addEventListener('click',()=>go(+b.dataset.back)));
+  $('next1').addEventListener('click',()=>{if(!sel.size){$('e-services').hidden=false;return;}go(2);});
+  document.querySelectorAll('input[name=priority]').forEach(r=>r.addEventListener('change',()=>{ticket();$('dateField').style.opacity=$('pr-emerg').checked?.5:1;}));
+
+  function setErr(id,bad){const f=$(id).closest('.field');f.classList.toggle('invalid',bad);f.querySelector('.err').hidden=!bad;return bad;}
+  const phoneDigits=()=>$('phone').value.replace(/\D/g,'').slice(-10);
+  function validate2(){
+    let bad=false;
+    bad=setErr('name',$('name').value.trim().length<2)||bad;
+    bad=setErr('phone',!/^[6-9]\d{9}$/.test(phoneDigits()))||bad;
+    const em=$('email').value.trim();bad=setErr('email',!!em&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em))||bad;
+    bad=setErr('siteType',!$('siteType').value)||bad;
+    bad=setErr('address',$('address').value.trim().length<5)||bad;
+    bad=setErr('city',$('city').value.trim().length<2)||bad;
+    bad=setErr('date',!!$('date').value&&$('date').value<today)||bad;
+    if(bad){const first=document.querySelector('.field.invalid input,.field.invalid select');first&&first.focus();}
+    return !bad;
+  }
+  $('next2').addEventListener('click',()=>{if(validate2())go(3);});
+  ['name','phone','email','siteType','address','city','date'].forEach(id=>$(id).addEventListener('input',()=>{$(id).closest('.field').classList.remove('invalid');$(id).closest('.field').querySelector('.err').hidden=true;ticket();}));
+
+  /* amount */
+  function amt(){const v=$('amount').value.trim();return /^\d+$/.test(v)?parseInt(v,10):NaN;}
+  function onAmount(){
+    const a=amt(),ok=a>=500;
+    $('amountBox').classList.toggle('invalid',!ok&&$('amount').value!=='');
+    $('e-amount').hidden=ok||$('amount').value==='';
+    $('payLabel').textContent=ok?`Pay ${fmt(a)} & confirm booking`:'Enter ₹500 or more';
+    $('pay').disabled=!ok;
+    document.querySelectorAll('#chips button').forEach(b=>b.classList.toggle('on',+b.dataset.v===a));
+    Scene3D.setAmount(ok?a:500);summary();ticket();
+  }
+  $('amount').addEventListener('input',onAmount);
+  $('chips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$('amount').value=b.dataset.v;onAmount();});
+  $('agree').addEventListener('change',()=>$('e-agree').hidden=true);
+
+  function collect(){
+    return{services:[...sel],priority:document.querySelector('input[name=priority]:checked').value,
+      name:$('name').value.trim(),phone:phoneDigits(),email:$('email').value.trim(),siteType:$('siteType').value,
+      siteName:$('siteName').value.trim(),address:$('address').value.trim(),city:$('city').value.trim(),
+      date:$('date').value,details:$('details').value.trim(),amount:amt()};
+  }
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const svcNames=list=>list.map(i=>byId[i].name).join(', ');
+  const dateText=d=>d?new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}):'';
+  function rows(p,extra=[]){
+    const r=[['Services',svcNames(p.services)],['Priority',p.priority],['Name',p.name],['Mobile','+91 '+p.phone],
+      ['Site',[p.siteName,p.siteType].filter(Boolean).join(' · ')],['Address',p.address+', '+p.city]];
+    if(p.date&&!/Emergency/.test(p.priority))r.push(['Preferred date',dateText(p.date)]);
+    return r.concat(extra).map(([k,v])=>`<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
+  }
+  function summary(){const p=collect();$('sum').innerHTML=rows(p,[['Advance now',isNaN(p.amount)?'—':fmt(p.amount)]]);}
+  function ticket(){
+    $('tkSvc').textContent=sel.size?[...sel].map(i=>byId[i].name.replace(/ repair| work/,'')).join(', '):'None yet';
+    $('tkPri').textContent=document.querySelector('input[name=priority]:checked').value;
+    $('tkSite').textContent=[$('siteName').value.trim(),$('city').value.trim()].filter(Boolean).join(', ')||'—';
+    const a=amt();$('tkAmt').textContent=a>=500?fmt(a):'Min ₹500';
+  }
+
+  /* payment */
+  const busy=(on,txt)=>{$('busy').hidden=!on;if(txt)$('busyText').textContent=txt;};
+  const payErr=msg=>{const e=$('payErr');e.textContent=msg;e.hidden=!msg;if(msg)e.scrollIntoView({behavior:'smooth',block:'center'});};
+  $('pay').addEventListener('click',async()=>{
+    payErr('');
+    const p=collect();
+    if(!(p.amount>=500)){$('e-amount').hidden=false;return;}
+    if(!$('agree').checked){$('e-agree').hidden=false;return;}
+    if(DEMO){busy(true,'Opening secure payment…');setTimeout(()=>busy(true,'Confirming your payment…'),900);
+      setTimeout(()=>{busy(false);done({bookingId:'SSR-PREVIEW-'+Math.random().toString(16).slice(2,6).toUpperCase(),paymentId:'pay_PREVIEW',amount:p.amount,p,demo:true});},2000);return;}
+    if(typeof window.Razorpay==='undefined'){payErr('The secure payment window could not load. Turn off any ad-blocker or try another browser, then tap Pay again.');return;}
+    busy(true,'Creating your booking…');
+    let order;
+    try{const r=await fetch('/.netlify/functions/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});
+      order=await r.json().catch(()=>({}));if(!r.ok)throw new Error(order.error||'Could not start the payment. Please try again.');}
+    catch(e){busy(false);payErr(e.message||'Could not reach the payment server. Check your internet and try again.');return;}
+    busy(false);
+    const rzp=new Razorpay({key:order.keyId,amount:order.amount,currency:order.currency,order_id:order.orderId,
+      name:'SS Retail Services',description:'Service booking advance · '+order.bookingId,
+      prefill:{name:p.name,email:p.email,contact:'+91'+p.phone},notes:{booking_id:order.bookingId},theme:{color:'#FF8A3D'},
+      handler:resp=>verify(resp,order,p),
+      modal:{confirm_close:true,ondismiss:()=>payErr('Payment was not completed, so your booking is not confirmed yet. Tap Pay to try again.')}});
+    rzp.on('payment.failed',r=>payErr('Payment failed'+(r&&r.error&&r.error.description?': '+r.error.description:'')+'. Your booking is not confirmed. You can try again with another method.'));
+    rzp.open();
+  });
+  async function verify(resp,order,p){
+    busy(true,'Confirming your payment…');
+    try{const r=await fetch('/.netlify/functions/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(resp)});
+      const d=await r.json().catch(()=>({}));if(!r.ok||!d.ok)throw new Error(d.error||'');
+      busy(false);done({bookingId:d.bookingId||order.bookingId,paymentId:d.paymentId,amount:(d.amount||order.amount)/100,p,demo:false});}
+    catch(e){busy(false);payErr(`We got your payment response but could not confirm it automatically. Please don't pay again. Send your payment ID ${resp.razorpay_payment_id} to us on WhatsApp (+91 99057 19715) and we'll confirm your booking.`);}
+  }
+  function done({bookingId,paymentId,amount,p,demo}){
+    $('flow').hidden=true;$('done').hidden=false;
+    $('doneId').textContent=bookingId;
+    $('doneTitle').textContent=demo?'Booking confirmed (preview)':'Booking confirmed';
+    $('doneMsg').textContent=demo?'This is how customers see a successful booking. No payment was taken in preview mode.':`We've received your advance of ${fmt(amount)}. Our team will call you on +91 ${p.phone} to schedule the visit.`;
+    $('doneSum').innerHTML=rows(p,[['Advance paid',fmt(amount)],['Payment ID',paymentId]]).replace('<dd>'+esc(fmt(amount))+'</dd>','<dd class="paid">'+esc(fmt(amount))+' ✓</dd>');
+    const msg=`Hi SS Retail Services, I booked a service online.\nBooking ID: ${bookingId}\nPayment ID: ${paymentId}\nAdvance: ${fmt(amount)}\nServices: ${svcNames(p.services)}\nPriority: ${p.priority}\nName: ${p.name}\nMobile: +91 ${p.phone}\nSite: ${[p.siteName,p.siteType].filter(Boolean).join(', ')}\nAddress: ${p.address}, ${p.city}`+(p.date?`\nPreferred date: ${dateText(p.date)}`:'');
+    $('doneWa').href=`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
+    $('tkId').textContent=bookingId;$('tkSt').textContent='Confirmed';$('tkSt').classList.add('ok');
+    document.querySelectorAll('.stepper li').forEach(li=>{li.classList.remove('on');li.classList.add('done');});
+    Scene3D.celebrate();
+    $('doneTitle').focus({preventScroll:true});
+    if(innerWidth<900)document.querySelector('.panel').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+})();
+</script>
+</body>
+</html>
