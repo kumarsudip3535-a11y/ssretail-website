@@ -569,7 +569,7 @@ const Scene3D=(function(){
   const fmt=n=>'₹'+Number(n||0).toLocaleString('en-IN');
   const sel=new Set();
   const host=location.hostname;
-  const LIVE_HOST=/(^|\.)ssretailservices\.in$|\.netlify\.app$/.test(host);
+  const LIVE_HOST=/(^|\.)ssretailservices\.in$|\.netlify\.app$|\.pages\.dev$/.test(host);
   const DEMO=!LIVE_HOST&&(typeof window.Razorpay==='undefined'||/[?&]demo=1/.test(location.search));
   if(DEMO)$('demo').hidden=false;
 
@@ -673,7 +673,7 @@ const Scene3D=(function(){
     if(typeof window.Razorpay==='undefined'){payErr('The secure payment window could not load. Turn off any ad-blocker or try another browser, then tap Pay again.');return;}
     busy(true,'Creating your booking…');
     let order;
-    try{const r=await fetch('/.netlify/functions/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});
+    try{const r=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});
       order=await r.json().catch(()=>({}));if(!r.ok)throw new Error(order.error||'Could not start the payment. Please try again.');}
     catch(e){busy(false);payErr(e.message||'Could not reach the payment server. Check your internet and try again.');return;}
     busy(false);
@@ -687,7 +687,7 @@ const Scene3D=(function(){
   });
   async function verify(resp,order,p){
     busy(true,'Confirming your payment…');
-    try{const r=await fetch('/.netlify/functions/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(resp)});
+    try{const r=await fetch('/api/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(resp)});
       const d=await r.json().catch(()=>({}));if(!r.ok||!d.ok)throw new Error(d.error||'');
       busy(false);done({bookingId:d.bookingId||order.bookingId,paymentId:d.paymentId,amount:(d.amount||order.amount)/100,p,demo:false});}
     catch(e){busy(false);payErr(`We got your payment response but could not confirm it automatically. Please don't pay again. Send your payment ID ${resp.razorpay_payment_id} to us on WhatsApp (+91 99057 19715) and we'll confirm your booking.`);}
