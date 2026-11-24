@@ -1,0 +1,15 @@
+{
+  // Cloudflare Worker settings for ssretailservices.in
+  // Razorpay keys live in the Cloudflare dashboard as Secrets, not here (this repo is public).
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ssretail-website",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash"
+  },
+  "keep_vars": true,
+  "observability": { "enabled": true }
+}

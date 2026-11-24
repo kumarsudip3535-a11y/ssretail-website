@@ -8,9 +8,9 @@
 - `_redirects` – `/png` → PNG Connect app
 - `png/` – PNG Connect files
 
-Hosting: Cloudflare Pages (no build command, output directory `/`).
+Hosting: Cloudflare Worker `ssretail-website` with Static Assets (`wrangler.jsonc`, entry `worker.js`; `.assetsignore` keeps code files private). Push to `main` and Cloudflare deploys automatically.
 
-Cloudflare Pages environment variables required for payments (Settings → Variables and Secrets, type Secret):
+Worker secrets required for payments (Settings → Variables and Secrets, type **Secret** — never commit them, this repo is public):
 - `RAZORPAY_KEY_ID`
 - `RAZORPAY_KEY_SECRET`
 

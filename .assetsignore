@@ -1,0 +1,14 @@
+.git
+.gitignore
+.assetsignore
+node_modules
+functions
+netlify
+netlify.toml
+worker.js
+wrangler.jsonc
+wrangler.toml
+package.json
+package-lock.json
+README.md
+_redirects
